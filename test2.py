@@ -2,7 +2,7 @@
 
 import yaml
 
-with open("C:\Projects\python\test\venv\config.yml", 'r') as ymlfile:
+with open("config.yml", 'r') as ymlfile:
     cfg = yaml.load(ymlfile)
 
 print(cfg['s1'])

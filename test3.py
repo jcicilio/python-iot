@@ -1,28 +1,35 @@
 import sched
 import time
-from random import randint
 from datetime import datetime
+from playsound import playsound
+from os import listdir
+from random import randint
 
-s1 = '16:54:00'
-s2 = '16:56:00'
-FMT = '%H:%M:%S'
-
+### Setup
 # set rollover time
+s1 = '09:15:00'
+s2 = '18:15:00'
+FMT = '%H:%M:%S'
 tdelta = datetime.strptime(s2, FMT) - datetime.strptime(s1, FMT)
 diff = tdelta.seconds
 rollover = (24*360)-diff
 scheduler = sched.scheduler(time.time, time.sleep)
+path = "/temp/sounds/"
+soundFiles = listdir(path)
 
 def Now():
     return time.strftime(FMT, time.localtime())
 
+def playSound():
+    # https://www.nps.gov/subjects/sound/gallery.htm
+    print "playing", Now(), s1, s2
+    index = randint(0, len(soundFiles)-1)
+    playsound(path + soundFiles[index])
 
-def print_event():
-    print Now(), s1, s2
     doSchedule()
 
 def getRand():
-    return randint(1, 5)
+    return randint(5, 15)
 
 def doSchedule():
     # if at end of schedule for day
@@ -32,7 +39,8 @@ def doSchedule():
         print "Rolling Over"
         r = rollover
 
-    scheduler.enter(r, 1, print_event, ())
+    print "next sound starting in " + str(r) + " seconds"
+    scheduler.enter(r, 1, playSound, ())
 
 
 if __name__== "__main__":
