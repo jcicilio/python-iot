@@ -5,14 +5,15 @@ from playsound import playsound
 from os import listdir
 from random import randint
 
+
 ### Setup
 # set rollover time
-s1 = '09:15:00'
-s2 = '18:15:00'
+s1 = '12:15:00'
+s2 = '12:45:00'
 FMT = '%H:%M:%S'
 tdelta = datetime.strptime(s2, FMT) - datetime.strptime(s1, FMT)
 diff = tdelta.seconds
-rollover = (24*360)-diff
+rollover = (24*60*60)-diff
 scheduler = sched.scheduler(time.time, time.sleep)
 path = "/temp/sounds/"
 soundFiles = listdir(path)
@@ -29,7 +30,7 @@ def playSound():
     doSchedule()
 
 def getRand():
-    return randint(5, 15)
+    return randint(60, 600)
 
 def doSchedule():
     # if at end of schedule for day
@@ -41,7 +42,6 @@ def doSchedule():
 
     print "next sound starting in " + str(r) + " seconds"
     scheduler.enter(r, 1, playSound, ())
-
 
 if __name__== "__main__":
     # wait for start time to pass before beginning
