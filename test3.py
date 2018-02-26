@@ -5,13 +5,12 @@ from playsound import playsound
 from os import listdir
 from random import randint
 
-
 ### Setup
 # set rollover time
-s1 = '12:15:00'
-s2 = '12:45:00'
+startTime = '12:55:00'
+endTime = '13:10:00'
 FMT = '%H:%M:%S'
-tdelta = datetime.strptime(s2, FMT) - datetime.strptime(s1, FMT)
+tdelta = datetime.strptime(endTime, FMT) - datetime.strptime(startTime, FMT)
 diff = tdelta.seconds
 rollover = (24*60*60)-diff
 scheduler = sched.scheduler(time.time, time.sleep)
@@ -23,8 +22,8 @@ def Now():
 
 def playSound():
     # https://www.nps.gov/subjects/sound/gallery.htm
-    print "playing", Now(), s1, s2
     index = randint(0, len(soundFiles)-1)
+    print "playing", soundFiles[index], Now(), startTime, endTime
     playsound(path + soundFiles[index])
 
     doSchedule()
@@ -35,8 +34,8 @@ def getRand():
 def doSchedule():
     # if at end of schedule for day
     r = getRand()
-    if (Now()>s2):
-        print Now(), s2
+    if (Now()>endTime):
+        print Now(), endTime
         print "Rolling Over"
         r = rollover
 
@@ -45,8 +44,8 @@ def doSchedule():
 
 if __name__== "__main__":
     # wait for start time to pass before beginning
-    while (Now()<s1):
-        print "Waiting to start"
+    while (Now()<startTime or Now()>endTime):
+        print "Waiting to start at ", startTime
         time.sleep(60)
 
     print "starting"
