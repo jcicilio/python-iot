@@ -16,6 +16,8 @@ rollover = (24*60*60)-diff
 scheduler = sched.scheduler(time.time, time.sleep)
 path = "/temp/sounds/"
 soundFiles = listdir(path)
+minWaitSeconds = 60
+maxWaitSeconds = 600
 
 def Now():
     return time.strftime(FMT, time.localtime())
@@ -29,7 +31,7 @@ def playSound():
     doSchedule()
 
 def getRand():
-    return randint(60, 600)
+    return randint(minWaitSeconds, maxWaitSeconds)
 
 def doSchedule():
     # if at end of schedule for day
